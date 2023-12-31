@@ -26,8 +26,24 @@ const initializeDBAndServer = async () => {
 
 initializeDBAndServer();
 
-app.get("/", async (request, response) => {
-  const dbQuery = `SELECT * FROM Categories;`;
+app.get("/items", async (request, response) => {
+  const {
+    sort_by = "id",
+    search_q = "",
+    order = "ASC",
+    category_id = "",
+  } = request.query;
+  let dbQuery = `SELECT * FROM Items WHERE name LIKE '%${search_q}%' ORDER BY ${sort_by} ${order}`;
+  if (category_id !== "") {
+    dbQuery = `SELECT * FROM Items WHERE category_id=${category_id} AND name LIKE '%${search_q}%' ORDER BY ${sort_by} ${order}`;
+  }
+  const data = await db.all(dbQuery);
+  console.log(dbQuery);
+  response.json(data);
+});
+
+app.get("/categories", async (request, response) => {
+  const dbQuery = `SELECT * FROM categories;`;
   const data = await db.all(dbQuery);
   response.json(data);
 });

@@ -1,29 +1,33 @@
 import {Component} from 'react'
 
 import Header from '../Header'
+import './index.css'
 
 class Home extends Component {
+  state = {data: []}
+
   componentDidMount() {
     this.getData()
   }
 
   getData = async () => {
-    try {
-      const answer = await fetch('http://localhost:3001')
-      if (!answer.ok) {
-        throw new Error(`HTTP error! Status: ${answer.status}`)
-      }
+    const answer = await fetch('http://localhost:3001')
+    if (answer.ok) {
       const data = await answer.json()
-      console.log(data)
-    } catch (error) {
-      console.error('Error fetching data:', error)
+      this.setState({data})
     }
   }
 
   render() {
+    const {data} = this.state
+
     return (
       <div>
         <Header />
+        <img
+          src="https://img.freepik.com/free-photo/beautiful-view-green-fields-sunrise-captured-canggu-bali_181624-14146.jpg"
+          className="home-image"
+        />
       </div>
     )
   }

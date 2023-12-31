@@ -8,6 +8,7 @@ const App = () => (
   <BrowserRouter>
     <Routes>
       <Route exact path="/" Component={Home} />
+      <Route exact path="/products" Component={Products} />
     </Routes>
   </BrowserRouter>
 )
