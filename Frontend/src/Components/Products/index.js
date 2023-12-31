@@ -1,67 +1,69 @@
-import {Component} from 'react'
+import { Component } from "react";
 
-import {Oval} from 'react-loader-spinner'
+import { Oval } from "react-loader-spinner";
 
-import {FaSearch} from 'react-icons/fa'
+import { FaSearch } from "react-icons/fa";
 
-import Header from '../Header'
-import './index.css'
+import Header from "../Header";
+import "./index.css";
 
 const sortbyOptions = [
   {
-    optionId: 'PRICE_HIGH',
-    displayText: 'Price (High-Low)',
+    optionId: "PRICE_HIGH",
+    displayText: "Price (High-Low)",
   },
   {
-    optionId: 'PRICE_LOW',
-    displayText: 'Price (Low-High)',
+    optionId: "PRICE_LOW",
+    displayText: "Price (Low-High)",
   },
-]
+];
 
 class Products extends Component {
   state = {
     data: [],
-    status: 'INITIAL',
+    status: "INITIAL",
     categories: [],
-    sortBy: 'id',
-    order: 'ASC',
-    category: '',
-    selectedCategory: '',
-    searchInput: '',
+    sortBy: "id",
+    order: "ASC",
+    category: "",
+    selectedCategory: "",
+    searchInput: "",
     activeOptionId: sortbyOptions[0].optionId,
-  }
+  };
 
   componentDidMount() {
-    this.getAllCategories()
+    this.getAllCategories();
   }
 
   getAllCategories = async () => {
-    this.setState({status: 'LOADING'})
-    const answer = await fetch(`http://localhost:3001/categories`)
+    this.setState({ status: "LOADING" });
+    const answer = await fetch(`http://localhost:3001/categories`);
     if (answer.ok) {
-      const data = await answer.json()
-      this.setState({categories: data})
+      const data = await answer.json();
+      this.setState({ categories: data });
     }
-    this.getAllProducts()
-  }
+    this.getAllProducts();
+  };
 
   getAllProducts = async () => {
-    const {sortBy, searchInput, order, category} = this.state
+    const { sortBy, searchInput, order, category } = this.state;
 
     const answer = await fetch(
-      `http://localhost:3001/items?sort_by=${sortBy}&${order}&search_q=${searchInput}&category_id=${category}`,
-    )
+      `http://localhost:3001/items?sort_by=${sortBy}&${order}&search_q=${searchInput}&category_id=${category}`
+    );
     if (answer.ok) {
-      const data = await answer.json()
-      this.setState({data, status: 'SUCCESS'})
+      const data = await answer.json();
+      this.setState({ data, status: "SUCCESS" });
     } else {
-      this.setState({status: 'FAILURE'})
+      this.setState({ status: "FAILURE" });
     }
-  }
+  };
 
-  onCategoryChange = event => {
-    const {categories} = this.state
-    const element = categories.filter(each => each.name === event.target.value)
+  onCategoryChange = (event) => {
+    const { categories } = this.state;
+    const element = categories.filter(
+      (each) => each.name === event.target.value
+    );
 
     this.setState(
       {
@@ -69,32 +71,32 @@ class Products extends Component {
         category: element[0].id,
       },
       () => {
-        this.getAllProducts()
-      },
-    )
-  }
+        this.getAllProducts();
+      }
+    );
+  };
 
-  onInputChange = event => {
+  onInputChange = (event) => {
     this.setState({
       searchInput: event.target.value,
-    })
-  }
+    });
+  };
 
-  sortChange = event => {
-    if (event.target.value === 'PRICE_HIGH')
+  sortChange = (event) => {
+    if (event.target.value === "PRICE_HIGH")
       this.setState({
         activeOptionId: event.target.value,
-        sort: 'price',
-        order: 'DESC',
-      })
+        sort: "price",
+        order: "DESC",
+      });
     else {
       this.setState({
         activeOptionId: event.target.value,
-        sort: 'price',
-        order: 'ASC',
-      })
+        sort: "price",
+        order: "ASC",
+      });
     }
-  }
+  };
 
   renderLoading = () => (
     <div className="loader">
@@ -107,7 +109,7 @@ class Products extends Component {
         wrapperClass=""
       />
     </div>
-  )
+  );
 
   renderOptionsMenu = () => {
     const {
@@ -116,7 +118,7 @@ class Products extends Component {
       activeOptionId,
       selectedCategory,
       searchInput,
-    } = this.state
+    } = this.state;
 
     return (
       <div className="Category-container">
@@ -130,7 +132,7 @@ class Products extends Component {
             className="category"
             id="category"
           >
-            {categories.map(each => (
+            {categories.map((each) => (
               <option value={each.name}>{each.name}</option>
             ))}
           </select>
@@ -143,7 +145,7 @@ class Products extends Component {
             id="category-options"
             value={activeOptionId}
           >
-            {sortbyOptions.map(each => (
+            {sortbyOptions.map((each) => (
               <option value={each.optionId}>{each.displayText}</option>
             ))}
           </select>
@@ -166,17 +168,17 @@ class Products extends Component {
           </button>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   renderSuccess = () => {
-    const {data} = this.state
+    const { data } = this.state;
     return (
       <>
         <div className="products-container">
           {this.renderOptionsMenu()}
           <ul className="products-card">
-            {data.map(each => (
+            {data.map((each) => (
               <li className="product-item">
                 <img
                   src={each.image_url}
@@ -186,6 +188,7 @@ class Products extends Component {
                 <div className="products-detail-container">
                   <p className="item">{each.name}</p>
                 </div>
+
                 <p className="items">
                   Price : {each.price}/- <span className="off">15 % off</span>
                 </p>
@@ -194,24 +197,24 @@ class Products extends Component {
           </ul>
         </div>
       </>
-    )
-  }
+    );
+  };
 
   renderProducts = () => {
-    const {status} = this.state
+    const { status } = this.state;
 
     switch (status) {
-      case 'LOADING':
-        return this.renderLoading()
-      case 'SUCCESS':
-        return this.renderSuccess()
-      case 'FAILURE':
-        return this.renderFailure()
+      case "LOADING":
+        return this.renderLoading();
+      case "SUCCESS":
+        return this.renderSuccess();
+      case "FAILURE":
+        return this.renderFailure();
 
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   render() {
     return (
@@ -219,8 +222,8 @@ class Products extends Component {
         <Header />
         {this.renderProducts()}
       </div>
-    )
+    );
   }
 }
 
-export default Products
+export default Products;
