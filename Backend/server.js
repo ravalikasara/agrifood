@@ -27,5 +27,7 @@ const initializeDBAndServer = async () => {
 initializeDBAndServer();
 
 app.get("/", async (request, response) => {
-  return response.json({ message: "hi ravalika" });
+  const dbQuery = `SELECT * FROM Categories;`;
+  const data = await db.all(dbQuery);
+  response.json(data);
 });

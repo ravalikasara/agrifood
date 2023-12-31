@@ -14,7 +14,7 @@ class Home extends Component {
         throw new Error(`HTTP error! Status: ${answer.status}`)
       }
       const data = await answer.json()
-      console.log(data.message)
+      console.log(data)
     } catch (error) {
       console.error('Error fetching data:', error)
     }
