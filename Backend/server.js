@@ -26,7 +26,6 @@ const initializeDBAndServer = async () => {
 
 initializeDBAndServer();
 
-<<<<<<< HEAD
 app.get("/items", async (request, response) => {
   const {
     sort_by = "id",
@@ -45,11 +44,7 @@ app.get("/items", async (request, response) => {
 
 app.get("/categories", async (request, response) => {
   const dbQuery = `SELECT * FROM categories;`;
-=======
-app.get("/", async (request, response) => {
-  const dbQuery = `SELECT * FROM Items;`;
->>>>>>> 5606d12c427ee67febafd51d9d636ac503a74386
   const data = await db.all(dbQuery);
-  
+
   response.json(data);
 });
