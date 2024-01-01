@@ -15,7 +15,7 @@ const initializeDBAndServer = async () => {
       filename: dbPath,
       driver: sqlite3.Database,
     });
-    app.listen(30002, () => {
+    app.listen(3002, () => {
       console.log("Server Running at http://localhost:3001");
     });
   } catch (e) {
@@ -33,6 +33,7 @@ app.get("/items", async (request, response) => {
     order = "ASC",
     category_id = "",
   } = request.query;
+  console.log(request.query);
   let dbQuery = `SELECT * FROM Items WHERE name LIKE '%${search_q}%' ORDER BY ${sort_by} ${order}`;
   if (category_id !== "") {
     dbQuery = `SELECT * FROM Items WHERE category_id=${category_id} AND name LIKE '%${search_q}%' ORDER BY ${sort_by} ${order}`;
