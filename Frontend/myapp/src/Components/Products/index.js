@@ -61,19 +61,30 @@ class Products extends Component {
 
   onCategoryChange = (event) => {
     const { categories } = this.state;
-    const element = categories.filter(
-      (each) => each.name === event.target.value
-    );
-
-    this.setState(
-      {
-        selectedCategory: event.target.value,
-        category: element[0].id,
-      },
-      () => {
-        this.getAllProducts();
-      }
-    );
+    if (event.target.value !== "") {
+      const element = categories.filter(
+        (each) => each.name === event.target.value
+      );
+      this.setState(
+        {
+          selectedCategory: event.target.value,
+          category: element[0].id,
+        },
+        () => {
+          this.getAllProducts();
+        }
+      );
+    } else {
+      this.setState(
+        {
+          selectedCategory: event.target.value,
+          category: "",
+        },
+        () => {
+          this.getAllProducts();
+        }
+      );
+    }
   };
 
   onInputChange = (event) => {
@@ -142,6 +153,7 @@ class Products extends Component {
             className="category"
             id="category"
           >
+            <option value="">All</option>
             {categories.map((each) => (
               <option value={each.name}>{each.name}</option>
             ))}

@@ -11,6 +11,7 @@ class Home extends Component {
         <img
           src="https://img.freepik.com/free-photo/beautiful-view-green-fields-sunrise-captured-canggu-bali_181624-14146.jpg"
           className="home-image"
+          alt="home"
         />
       </div>
     );
